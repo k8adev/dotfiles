@@ -1,0 +1,5 @@
+alias cls="clear"
+alias ls="ls -a"
+alias bashrc="vim ~/.bashrc"
+alias vimrc="vim ~/.vimrc"
+alias project="cd ~/Project"
