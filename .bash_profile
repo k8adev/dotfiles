@@ -1,34 +1,58 @@
-RED='\[\e[1;31m\]'
-GREEN='\[\e[1;32m\]'
-YELLOW='\[\e[1;33m\]'
-BLUE='\[\e[1;34m\]'
-MAGENTA='\[\e[1;35m\]'
-CYAN='\[\e[1;36m\]'
-WHITE='\[\e[0m\]'
+if [ -f ~/.bashrc ]; then
+  source ~/.bashrc
+fi
 
-function git-status() {
-  local status="`git status -unormal 2>&1`"
+if [ -f ~/.git-completion.bash ]; then
+  source ~/.git-completion.bash
+fi
 
-  if ! [[ "$status" =~ Not\ a\ git\ repo ]]; then
-    if [[ "$status" =~ nothing\ to\ commit ]]; then
-      local ansi=$GREEN
-    elif [[ "$status" =~ nothing\ added\ to\ commit\ but\ untracked\ files\ present ]]; then
-      local ansi=$YELLOW
-    else
-      local ansi=$RED
+if [ -f ~/.git-prompt.sh ]; then
+  GIT_PS1_SHOWDIRTYSTATE=true
+  GIT_PS1_SHOWSTASHSTATE=true
+  GIT_PS1_SHOWUNTRACKEDFILES=true
+  GIT_PS1_SHOWUPSTREAM="auto"
+  GIT_PS1_HIDE_IF_PWD_IGNORED=true
+  GIT_PS1_SHOWCOLORHINTS=true
+
+  source ~/.git-prompt.sh
+fi
+
+function prompt_command {
+  local cyan="\[\033[0;36m\]"
+  local reset="\e[m"
+
+  PS1="${cyan}[\t]${reset} \u ${cyan}at${reset} \W"
+
+  local branch
+
+  if branch="$(__git_ps1)"; then
+    local magenta="\[\033[0;35m\]"
+    local yellow="\[\033[01;33m\]"
+    local green="\[\033[0;32m\]"
+    local red="\[\033[1;31m\]"
+
+    # Branch color.
+    local status="$green"
+
+    # Staged.
+    if [[ "$branch" =~ "+" ]]; then
+      status="$yellow"
+    # Untracked.
+    elif [[ "$branch" =~ "%" ]]; then
+      status="$red"
+    # Stashed.
+    elif [[ "$branch" =~ "$" ]]; then
+      status="$magenta"
+    # Dirty.
+    elif [[ "$branch" =~ "*" ]]; then
+      status="$cyan"
     fi
 
-    if [[ "$status" =~ On\ branch\ ([^[:space:]]+) ]]; then
-      branch=${BASH_REMATCH[1]}
-    else
-      branch="(`git describe --all --contains --abbrev=4 HEAD 2> /dev/null ||
-      echo HEAD`)"
-    fi
-
-    echo -n ''"$ansi"'('"$branch"')'"$WHITE"' '
+    PS1+="`echo ${status}$branch${reset}`"
   fi
+
+  PS1+=" $ "
 }
 
-export PROMPT_COMMAND='export PS1="$CYAN[\t]$WHITE 💀  \u ~ \W $(git-status)$ "'
-
+export PROMPT_COMMAND=prompt_command
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH

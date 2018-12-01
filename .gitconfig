@@ -1,0 +1,12 @@
+[core]
+    editor = vim
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "status"]
+    untracked = red
+    added = green
+    changed = yellow
