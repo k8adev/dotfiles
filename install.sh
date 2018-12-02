@@ -11,6 +11,9 @@ install_dependencies() {
 
   wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
   mv git-prompt.sh ~/.git-prompt.sh
+
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  vim -c "PlugInstall" -c "q" -c "q"
 }
 
 move_files_to_user_folder() {
@@ -18,6 +21,7 @@ move_files_to_user_folder() {
   cp .bash_profile ~/.bash_profile
   cp .bash_aliases ~/.bash_aliases
   cp .gitconfig ~/.gitconfig
+  cp .vimrc ~/.vimrc
 }
 
 set_git_configurations() {
@@ -25,7 +29,7 @@ set_git_configurations() {
   read git_config_user_name
   git config --global user.name "$git_config_user_name"
 
-  echo "\nInout your Git e-mail:"
+  echo "\nInput your Git e-mail:"
   read git_config_user_email
   git config --global user.email $git_config_user_email
 }
