@@ -56,4 +56,3 @@ function prompt_command {
 }
 
 export PROMPT_COMMAND=prompt_command
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
