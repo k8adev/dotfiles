@@ -1,21 +1,22 @@
-if [ -f ~/.bashrc ]; then
-  source ~/.bashrc
-fi
+source ~/.git-completion.bash
+source ~/.git-prompt.sh
+source ~/.bashrc
+source ~/.bash_aliases
 
-if [ -f ~/.git-completion.bash ]; then
-  source ~/.git-completion.bash
-fi
+for file in $(ls ~/.bash_profile_*); do
+  source ${file}
+done
 
-if [ -f ~/.git-prompt.sh ]; then
-  GIT_PS1_SHOWDIRTYSTATE=true
-  GIT_PS1_SHOWSTASHSTATE=true
-  GIT_PS1_SHOWUNTRACKEDFILES=true
-  GIT_PS1_SHOWUPSTREAM="auto"
-  GIT_PS1_HIDE_IF_PWD_IGNORED=true
-  GIT_PS1_SHOWCOLORHINTS=true
+for file in $(ls ~/.bash_aliases_*); do
+  source ${file}
+done
 
-  source ~/.git-prompt.sh
-fi
+GIT_PS1_SHOWDIRTYSTATE=true
+GIT_PS1_SHOWSTASHSTATE=true
+GIT_PS1_SHOWUNTRACKEDFILES=true
+GIT_PS1_SHOWUPSTREAM="auto"
+GIT_PS1_HIDE_IF_PWD_IGNORED=true
+GIT_PS1_SHOWCOLORHINTS=true
 
 function prompt_command {
   local cyan="\[\033[0;36m\]"
