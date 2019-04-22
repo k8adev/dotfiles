@@ -3,12 +3,12 @@ source ~/.git-prompt.sh
 source ~/.bashrc
 source ~/.bash_aliases
 
-for file in $(ls ~/.bash_profile_*); do
-  source ${file}
+for file in $(ls ~/.bash_profile_* 2>/dev/null); do
+  source $file
 done
 
-for file in $(ls ~/.bash_aliases_*); do
-  source ${file}
+for file in $(ls ~/.bash_aliases_* 2>/dev/null); do
+  source $file
 done
 
 GIT_PS1_SHOWDIRTYSTATE=true
